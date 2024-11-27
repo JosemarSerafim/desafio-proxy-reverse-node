@@ -6,7 +6,7 @@ const config = {
   host: "db",
   user: "josemar",
   password: "josemar",
-  database: "node-app",
+  database: "nodedb",
 };
 const mysql = require("mysql");
 const connection = mysql.createConnection(config);
@@ -14,6 +14,9 @@ const connection = mysql.createConnection(config);
 const sql = `INSERT INTO people(nome) values('josemar')`;
 connection.query(sql);
 connection.end();
+
+console.log('aqui');
+
 
 app.get("/", (req, res) => {
   res.send("<h1>Full Cycle</h1>");

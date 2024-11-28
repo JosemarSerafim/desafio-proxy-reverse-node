@@ -9,11 +9,12 @@ services:
     entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
     networks: 
       - node-network
-    volumes: 
-      - .:/usr/src/app
+    # volumes: 
+    #   - .:/usr/src/app
     tty: true
     ports: 
       - "3000:3000"
+    command: "node index.js"
     depends_on: 
        - db
 
@@ -26,15 +27,25 @@ services:
     ports:
       - '3307:3306'
     volumes: 
-      - ./mysql:/var/lib/mysql
+      - ../mysql-data:/var/lib/mysql
     environment: 
-      - MYSQL_USER=root
+      - MYSQL_USER=josemar
       - MYSQL_DATABASE=nodedb
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=josemar
+      - MYSQL_PASSWORD=josemar
     networks: 
       - node-network
-
+  nginx:
+    build: 
+      context: ./nginx/
+      dockerfile: Dockerfile.prod
+    container_name: nginx
+    ports:
+      - '8080:80'
+    networks:
+      - node-network
+    depends_on:
+      - app
 
 networks: 
   node-network:
